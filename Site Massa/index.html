@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Portfólio Oficial da Banda MASSA! - Punk Rock / Hardcore.">
+    <title>MASSA! | Official Artist Portfolio</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- CSS VARIABLES & CONFIG --- */
+        :root {
+            /* Light Mode */
+            --bg-color: #ffffff;
+            --secondary-bg: #f8f8f8;
+            --text-main: #111111;
+            --text-muted: #666666;
+            --accent: #E10600; 
+            --border-color: #eeeeee;
+            --logo-filter: invert(1);
+            --hero-overlay: 0.1;
+            --card-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            
+            --font-display: 'Oswald', sans-serif;
+            --font-body: 'Roboto', sans-serif;
+            --container: 1100px;
+            --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        /* Dark Mode */
+        [data-theme="dark"] {
+            --bg-color: #050505;
+            --secondary-bg: #0a0a0a;
+            --text-main: #f0f0f0;
+            --text-muted: #888888;
+            --border-color: #222222;
+            --logo-filter: invert(0);
+            --hero-overlay: 0.3;
+            --card-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        html { scroll-behavior: smooth; }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            overflow-x: hidden;
+            line-height: 1.6;
+            transition: background-color 0.4s var(--ease-out), color 0.4s var(--ease-out);
+        }
+
+        a { text-decoration: none; color: inherit; transition: color 0.3s var(--ease-out); }
+        img { display: block; max-width: 100%; height: auto; }
+        ul { list-style: none; }
+
+        /* Typography */
+        h1, h2, h3 { 
+            font-family: var(--font-display); 
+            text-transform: uppercase; 
+            letter-spacing: 1px;
+            color: var(--text-main);
+            font-weight: 500;
+        }
+
+        /* --- UTILS: ANIMATION CLASSES --- */
+        /* O estado inicial dos elementos animados (invisível e deslocado) */
+        .reveal-up {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
+            will-change: opacity, transform;
+        }
+
+        /* O estado final (visível) */
+        .reveal-up.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Delay para grids (efeito cascata) */
+        .delay-100 { transition-delay: 0.1s; }
+        .delay-200 { transition-delay: 0.2s; }
+        .delay-300 { transition-delay: 0.3s; }
+
+        /* --- COMPONENTS --- */
+        .container {
+            width: 88%;
+            max-width: var(--container);
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 5rem;
+            position: relative;
+        }
+
+        .section-header::after {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 2px;
+            background: var(--accent);
+            margin: 20px auto 0;
+            transform: scaleX(0);
+            transition: transform 0.6s var(--ease-out);
+        }
+        
+        .section-header.active::after { transform: scaleX(1); }
+
+        .section-title { font-size: 3rem; line-height: 1.1; margin: 0; }
+        .section-subtitle {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 35px;
+            border: 1px solid var(--text-main);
+            color: var(--text-main);
+            font-family: var(--font-display);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.85rem;
+            background: transparent;
+            cursor: pointer;
+            transition: all 0.3s var(--ease-out);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 0%; height: 100%;
+            background: var(--text-main);
+            z-index: -1;
+            transition: width 0.3s var(--ease-out);
+        }
+
+        .btn:hover { color: var(--bg-color); }
+        .btn:hover::before { width: 100%; }
+
+        .btn-accent { border-color: var(--accent); color: var(--accent); }
+        .btn-accent::before { background: var(--accent); }
+        .btn-accent:hover { color: #ffffff; }
+
+        /* --- NAVIGATION --- */
+        nav {
+            position: fixed;
+            top: 0; left: 0; width: 100%;
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.0); /* Transparente no topo */
+            backdrop-filter: blur(0px);
+            border-bottom: 1px solid transparent;
+            transition: all 0.4s var(--ease-out);
+        }
+
+        nav.scrolled {
+            background: var(--bg-color);
+            padding: 15px 50px;
+            border-bottom: 1px solid var(--border-color);
+            backdrop-filter: blur(10px); /* Opcional: Efeito vidro se o bg tiver alpha */
+        }
+
+		.nav-logo img {
+			height: 35px;
+			width: auto;
+            filter: var(--logo-filter);
+            transition: filter 0.3s;
+		}
+
+        .nav-actions { display: flex; align-items: center; gap: 40px; }
+        .nav-links { display: flex; gap: 30px; }
+        
+        .nav-link {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-main);
+            font-weight: 500;
+            position: relative;
+            opacity: 0.8;
+        }
+
+        .nav-link:hover { color: var(--accent); opacity: 1; }
+        .nav-link::after {
+            content: ''; position: absolute; bottom: -5px; left: 50%; width: 0; height: 1px;
+            background: var(--accent); transform: translateX(-50%); transition: 0.3s var(--ease-out);
+        }
+        .nav-link:hover::after { width: 100%; }
+
+        /* Theme Switch */
+        .theme-switch {
+            background: none; border: none; cursor: pointer;
+            color: var(--text-main); font-size: 1.1rem;
+            transition: transform 0.4s var(--ease-out);
+        }
+        .theme-switch:hover { transform: rotate(20deg) scale(1.1); color: var(--accent); }
+        
+        .menu-icon { display: none; font-size: 1.5rem; cursor: pointer; color: var(--text-main); }
+
+        /* --- HERO (CENTRALIZED) --- */
+        .hero {
+            height: 100vh;
+            width: 100%;
+            position: relative;
+            display: flex;
+            flex-direction: column; /* Garante empilhamento */
+            align-items: center;    /* Centraliza horizontalmente */
+            justify-content: center;/* Centraliza verticalmente */
+            background-color: var(--bg-color);
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: url('imagens/massatodos.png') center/cover no-repeat;
+            opacity: var(--hero-overlay);
+            filter: grayscale(100%);
+            z-index: 0;
+            transform: scale(1.05);
+            transition: opacity 0.5s;
+            animation: breathe 10s infinite alternate ease-in-out;
+        }
+
+        @keyframes breathe { from { transform: scale(1.05); } to { transform: scale(1.1); } }
+
+        .hero-content {
+            z-index: 2;
+            max-width: 800px;
+            padding: 0 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Reforça a centralização */
+        }
+
+        .hero-logo {
+            width: 100%;
+            max-width: 550px;
+            margin-bottom: 3rem;
+            filter: var(--logo-filter);
+            /* Animação de Entrada do Logo */
+            opacity: 0;
+            transform: scale(0.9) translateY(20px);
+            animation: heroEnter 1.2s var(--ease-out) forwards;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 20px;
+            opacity: 0;
+            animation: heroFadeUp 1s 0.6s forwards;
+        }
+
+        @keyframes heroEnter {
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        @keyframes heroFadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        section { padding: 7rem 0; }
+
+        /* --- MUSIC --- */
+        .latest-release { background: var(--bg-color); }
+        .release-container { display: flex; align-items: center; gap: 5rem; }
+
+        .album-art { flex: 1; position: relative; overflow: hidden; border-radius: 2px; }
+        .album-art img { width: 100%; transition: transform 0.6s var(--ease-out); filter: grayscale(100%); }
+        .album-art:hover img { transform: scale(1.03); filter: grayscale(0%); }
+
+        .album-details { flex: 1; }
+        .album-meta { font-size: 0.8rem; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase; display: block; margin-bottom: 1rem; }
+        .album-title { font-size: 3.5rem; line-height: 1; margin-bottom: 2rem; color: var(--text-main); }
+        
+        .track-list { margin-top: 2rem; border-top: 1px solid var(--border-color); }
+        .track-row {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 18px 0; border-bottom: 1px solid var(--border-color);
+            transition: 0.3s; color: var(--text-muted); cursor: default;
+        }
+        .track-row:hover { color: var(--text-main); padding-left: 10px; border-color: var(--text-main); }
+        .track-name { font-weight: 500; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 1px; }
+
+        /* --- ABOUT --- */
+        .about-section { background: var(--secondary-bg); }
+        .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+        
+        .about-text p { font-size: 1.05rem; color: var(--text-muted); margin-bottom: 1.5rem; font-weight: 300; text-align: justify; }
+        .about-highlight {
+            font-size: 1.6rem; font-family: var(--font-display); color: var(--text-main);
+            line-height: 1.4; margin-bottom: 2rem !important;
+            border-left: 3px solid var(--accent); padding-left: 20px;
+        }
+
+        .band-members { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+        .member-card { text-align: center; }
+        .member-card img {
+            width: 100%; height: 260px; object-fit: cover; margin-bottom: 15px;
+            filter: grayscale(100%); transition: 0.4s;
+        }
+        .member-card:hover img { filter: grayscale(0%); }
+
+        /* --- TOUR --- */
+        .tour-section { background: var(--bg-color); }
+        .tour-list { max-width: 900px; margin: 0 auto; }
+        
+        .tour-item {
+            display: grid; grid-template-columns: 1fr 2fr 1fr 1fr; align-items: center;
+            padding: 25px 0; border-bottom: 1px solid var(--border-color);
+            transition: 0.3s;
+        }
+        .tour-item:first-child { border-top: 1px solid var(--border-color); }
+        .tour-item:hover { transform: translateX(10px); border-color: var(--accent); }
+        .tour-date { font-family: var(--font-display); font-size: 1.3rem; color: var(--text-main); }
+        .tour-venue { font-weight: 400; text-transform: uppercase; font-size: 1.1rem; }
+        .tour-city { color: var(--text-muted); font-size: 0.9rem; text-transform: uppercase; }
+
+        /* --- SHOP --- */
+        .shop-section { background: var(--bg-color); }
+        .shop-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 3rem; }
+        
+        .product-item { transition: transform 0.4s var(--ease-out); }
+        .product-item:hover { transform: translateY(-10px); }
+        
+        .product-img {
+            height: 320px; width: 100%; background: var(--secondary-bg);
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 1.5rem; overflow: hidden;
+        }
+        .product-img img { max-height: 85%; transition: 0.5s var(--ease-out); mix-blend-mode: multiply; }
+        [data-theme="dark"] .product-img img { mix-blend-mode: normal; }
+        .product-item:hover .product-img img { transform: scale(1.1); }
+        
+        .product-info h3 { font-size: 1.1rem; margin-bottom: 5px; color: var(--text-main); }
+        .product-price { display: block; margin-bottom: 15px; color: var(--text-muted); font-size: 0.9rem; }
+        .product-info .btn { width: 100%; border-color: var(--border-color); }
+        .product-info .btn:hover { border-color: var(--text-main); }
+
+        /* --- FILES --- */
+        .files-section { background: var(--secondary-bg); border-top: 1px solid var(--border-color); }
+        .files-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; }
+
+        .file-card {
+            background: var(--bg-color); padding: 2.5rem; text-align: left;
+            border: 1px solid transparent; transition: 0.3s var(--ease-out);
+            display: flex; flex-direction: column; justify-content: space-between; height: 100%;
+            box-shadow: var(--card-shadow);
+        }
+        .file-card:hover { border-color: var(--border-color); transform: translateY(-5px); }
+        .file-header { display: flex; align-items: center; gap: 15px; margin-bottom: 1.5rem; }
+        .file-icon { font-size: 1.5rem; color: var(--text-main); }
+        .file-title { font-family: var(--font-display); text-transform: uppercase; font-size: 1.2rem; letter-spacing: 1px; color: var(--text-main); }
+
+        /* --- FOOTER --- */
+        .footer {
+            background: var(--bg-color); padding: 5rem 0 2rem;
+            text-align: center; border-top: 1px solid var(--border-color); color: var(--text-main);
+        }
+        .footer-logo img { height: 40px; margin: 0 auto 2rem; filter: var(--logo-filter); opacity: 0.8; }
+        .social-big { display: flex; justify-content: center; gap: 2.5rem; margin-bottom: 3rem; }
+        .social-icon { font-size: 1.6rem; color: var(--text-main); transition: 0.3s; opacity: 0.7; }
+        .social-icon:hover { color: var(--accent); opacity: 1; transform: translateY(-3px); }
+        .copyright { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 992px) {
+            .section-title { font-size: 2.5rem; }
+            .release-container { flex-direction: column; gap: 3rem; text-align: center; }
+            .tour-item { grid-template-columns: 1fr 2fr 1fr; gap: 10px; }
+            .tour-item div:last-child { display: none; }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed; top: 0; right: -100%; width: 100%; height: 100vh;
+                background: var(--bg-color);
+                flex-direction: column; justify-content: center; align-items: center;
+                transition: 0.5s var(--ease-out); gap: 2rem; z-index: 999;
+            }
+            .nav-links.active { right: 0; }
+            .menu-icon { display: block; z-index: 1000; }
+            .nav-link { font-size: 1.3rem; }
+            
+            .about-grid { grid-template-columns: 1fr; }
+            .tour-item { grid-template-columns: 1fr; text-align: center; gap: 5px; padding: 20px 0; }
+            .tour-item div:last-child { display: block; margin-top: 15px; }
+            .hero-logo { max-width: 80%; }
+            .album-title { font-size: 2.5rem; }
+        }
+    </style>
+
+    <script>
+        // Check theme before loading
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        }
+    </script>
+</head>
+<body>
+
+    <nav id="navbar">
+        <a href="#" class="nav-logo">
+			<img src="imagens/MASSA.svg" alt="MASSA!">
+		</a>
+        
+        <div class="nav-actions">
+            <ul class="nav-links">
+                <li><a href="#home" class="nav-link">Home</a></li>
+                <li><a href="#music" class="nav-link">Música</a></li>
+                <li><a href="#about" class="nav-link">Banda</a></li>
+                <li><a href="#tour" class="nav-link">Agenda</a></li>
+                <li><a href="#shop" class="nav-link">Loja</a></li>
+                <li><a href="#files" class="nav-link">Arquivos</a></li> 
+                <li><a href="#contact" class="nav-link">Contato</a></li>
+            </ul>
+
+            <button id="theme-toggle" class="theme-switch" aria-label="Alternar Tema">
+                <i class="fas fa-moon"></i>
+            </button>
+
+            <div class="menu-icon" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <header id="home" class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+            <img src="imagens/MASSA.svg" alt="MASSA!" class="hero-logo">
+            
+            <div class="hero-cta">
+                <a href="#music" class="btn btn-accent">Ouvir Agora</a>
+                <a href="#tour" class="btn">Ver Agenda</a>
+            </div>
+        </div>
+    </header>
+
+    <section id="music" class="latest-release">
+        <div class="container">
+            <div class="section-header reveal-up">
+                <span class="section-subtitle">Discografia</span>
+                <h2 class="section-title">Último Lançamento</h2>
+            </div>
+
+            <div class="release-container">
+                <div class="album-art reveal-up">
+                    <img src="imagens/BandaWallpaper.jpeg" alt="Capa do Álbum">
+                </div>
+
+                <div class="album-details reveal-up delay-200">
+                    <span class="album-meta">EP • 2025 • Punk/Hardcore</span>
+                    <h3 class="album-title">SISTEMA NERVOSO</h3>
+                    
+                    <div class="track-list">
+                        <div class="track-row">
+                            <span class="track-name">01. Caos Organizado</span>
+                            <span class="track-time">02:45</span>
+                        </div>
+                        <div class="track-row">
+                            <span class="track-name">02. Sistema Nervoso</span>
+                            <span class="track-time">03:12</span>
+                        </div>
+                        <div class="track-row">
+                            <span class="track-name">03. Véio Pidão (Bonus)</span>
+                            <span class="track-time">01:58</span>
+                        </div>
+                    </div>
+
+                    <div class="streaming-buttons" style="margin-top: 2rem; display: flex; gap: 15px;">
+                        <button class="btn btn-accent"><i class="fab fa-spotify"></i> Spotify</button>
+                        <button class="btn"><i class="fab fa-apple"></i> Apple Music</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="about-section">
+        <div class="container">
+            <div class="section-header reveal-up">
+                <span class="section-subtitle">Biografia</span>
+                <h2 class="section-title">A Banda</h2>
+            </div>
+
+            <div class="about-grid">
+                <div class="about-text reveal-up">
+                    <p class="about-highlight">"A MASSA! não pede licença. Nós chegamos, tocamos alto e deixamos o palco pegando fogo."</p>
+                    <p>Formada nas ruas de Aracaju em 2025, a banda MASSA! traz a essência crua do Punk Rock combinada com a velocidade do Hardcore moderno. Somos quatro amigos unidos pelo barulho, criando músicas que falam sobre a realidade urbana com energia visceral.</p>
+                </div>
+
+                <div class="band-members">
+                    <div class="member-card reveal-up delay-100">
+                        <img src="imagens/Ensaio2.jpeg" alt="Vocalista">
+                        <div class="member-name">Vocal</div>
+                        <div class="member-role">Voz / Guitarra</div>
+                    </div>
+                    <div class="member-card reveal-up delay-200">
+                        <img src="imagens/Ensaio3.jpeg" alt="Baixista">
+                        <div class="member-name">Baixo</div>
+                        <div class="member-role">Baixo / Backing</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="tour" class="tour-section">
+        <div class="container">
+            <div class="section-header reveal-up">
+                <span class="section-subtitle">On Tour</span>
+                <h2 class="section-title">Próximos Shows</h2>
+            </div>
+
+            <div class="tour-list">
+                <div class="tour-item reveal-up">
+                    <div class="tour-date">15 FEV</div>
+                    <div class="tour-venue">Dark'ave Festival</div>
+                    <div class="tour-city">Aracaju, SE</div>
+                    <div style="text-align: right;"><a href="#" class="btn btn-accent">Ingressos</a></div>
+                </div>
+                <div class="tour-item reveal-up delay-100">
+                    <div class="tour-date">22 FEV</div>
+                    <div class="tour-venue">Box Tr3s Session</div>
+                    <div class="tour-city">Aracaju, SE</div>
+                    <div style="text-align: right;"><span class="btn" style="opacity: 0.5; border: 1px dashed var(--text-muted);">Sold Out</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="shop" class="shop-section">
+        <div class="container">
+            <div class="section-header reveal-up">
+                <span class="section-subtitle">Merch Oficial</span>
+                <h2 class="section-title">Loja Online</h2>
+            </div>
+
+            <div class="shop-grid">
+                <div class="product-item reveal-up">
+                    <a href="https://umapenca.com/bandamassaju/camiseta/camiseta-massa-colorida-209325.html" target="_blank">
+                        <div class="product-img">
+                            <img src="imagens/CamisaMassaPreta.jpg" alt="Camiseta">
+                        </div>
+                        <div class="product-info">
+                            <h3>T-Shirt Black Edition</h3>
+                            <span class="product-price">R$ 57,70</span>
+                            <span class="btn">Comprar</span>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="product-item reveal-up delay-100">
+                    <a href="https://umapenca.com/bandamassaju/caneca/caneca-massa-paulinho-o-veio-pidao-222021.html" target="_blank">
+                        <div class="product-img">
+                            <img src="imagens/CanecaMassa.jpg" alt="Caneca">
+                        </div>
+                        <div class="product-info">
+                            <h3>Caneca "Véio Pidão"</h3>
+                            <span class="product-price">R$ 43,26</span>
+                            <span class="btn">Comprar</span>
+                        </div>
+                    </a>
+                </div>
+                
+                 <div class="product-item reveal-up delay-200">
+                    <a href="https://umapenca.com/bandamassaju/bottons/bottons-massa-logo-209327.html" target="_blank">
+                        <div class="product-img">
+                            <img src="imagens/Bottoms.jpg" alt="Bottoms">
+                        </div>
+                        <div class="product-info">
+                            <h3>Kit Bottoms Punk</h3>
+                            <span class="product-price">R$ 18,26</span>
+                            <span class="btn">Comprar</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="files" class="files-section">
+        <div class="container">
+            <div class="section-header reveal-up">
+                <span class="section-subtitle">Área Técnica</span>
+                <h2 class="section-title">Downloads</h2>
+            </div>
+
+            <div class="files-grid">
+                <div class="file-card reveal-up">
+                    <div class="file-header">
+                        <i class="fas fa-file-pdf file-icon"></i>
+                        <h3 class="file-title">Portfólio</h3>
+                    </div>
+                    <a href="#" download class="btn">Baixar PDF</a>
+                </div>
+
+                <div class="file-card reveal-up delay-100">
+                    <div class="file-header">
+                        <i class="fas fa-sliders-h file-icon"></i>
+                        <h3 class="file-title">Rider Técnico</h3>
+                    </div>
+                    <a href="#" download class="btn">Baixar PDF</a>
+                </div>
+
+                <div class="file-card reveal-up delay-200">
+                    <div class="file-header">
+                        <i class="fas fa-list-ol file-icon"></i>
+                        <h3 class="file-title">Input List</h3>
+                    </div>
+                    <a href="#" download class="btn">Baixar PDF</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact" class="footer">
+        <div class="container">
+            <a href="#" class="footer-logo">
+                <img src="imagens/MASSA.svg" alt="MASSA!">
+            </a>
+            
+            <div class="social-big">
+                <a href="https://www.instagram.com/massa_ofc/" target="_blank" class="social-icon fa-brands fa-instagram"></a>
+                <a href="https://wa.me/5579988343568" target="_blank" class="social-icon fa-brands fa-whatsapp"></a>
+                <a href="mailto:bandamassacontato@gmail.com" class="social-icon fa-regular fa-envelope"></a>
+                <a href="#" class="social-icon fa-brands fa-spotify"></a>
+            </div>
+
+            <p class="copyright">&copy; 2025 BANDA MASSA! ARACAJU HARDCORE.</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- 1. THEME LOGIC ---
+        const toggleBtn = document.getElementById('theme-toggle');
+        const icon = toggleBtn.querySelector('i');
+        const html = document.documentElement;
+
+        // Sync Icon on Load
+        function updateIcon() {
+            if (html.getAttribute('data-theme') === 'dark') {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            } else {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+            }
+        }
+        updateIcon();
+
+        toggleBtn.addEventListener('click', () => {
+            if (html.getAttribute('data-theme') === 'dark') {
+                html.setAttribute('data-theme', 'light');
+                localStorage.setItem('theme', 'light');
+            } else {
+                html.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+            }
+            updateIcon();
+        });
+
+        // --- 2. MOBILE MENU ---
+        function toggleMenu() {
+            const nav = document.querySelector('.nav-links');
+            const icon = document.querySelector('.menu-icon i');
+            nav.classList.toggle('active');
+            
+            if (nav.classList.contains('active')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        }
+
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                document.querySelector('.nav-links').classList.remove('active');
+                document.querySelector('.menu-icon i').classList.remove('fa-times');
+                document.querySelector('.menu-icon i').classList.add('fa-bars');
+            });
+        });
+
+        // --- 3. SCROLL EFFECTS (NAVBAR) ---
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 20) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+
+        // --- 4. SMART ANIMATIONS (INTERSECTION OBSERVER) ---
+        // Isso detecta quando os elementos entram na tela e ativa a animação
+        const observerOptions = {
+            threshold: 0.15, // Ativa quando 15% do elemento estiver visível
+            rootMargin: "0px 0px -50px 0px"
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    // Opcional: Descomente abaixo se quiser que a animação só aconteça uma vez
+                    // observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        // Seleciona todos os elementos com a classe .reveal-up
+        document.querySelectorAll('.reveal-up').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
