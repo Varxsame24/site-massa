@@ -12,7 +12,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        /* --- MANTENDO O MESMO CSS ORIGINAL --- */
         :root {
             --bg-color: #ffffff;
             --secondary-bg: #f8f8f8;
@@ -135,8 +134,13 @@
         }
         .hero-bg {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: url('imagens/massatodos.png') center/cover no-repeat; opacity: var(--hero-overlay);
-            filter: grayscale(100%); z-index: 0; transform: scale(1.05); transition: opacity 0.5s;
+            background-color: #111; 
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            opacity: var(--hero-overlay);
+            filter: grayscale(100%);
+            z-index: 0; transform: scale(1.05); transition: opacity 0.5s;
             animation: breathe 10s infinite alternate ease-in-out;
         }
         @keyframes breathe { from { transform: scale(1.05); } to { transform: scale(1.1); } }
@@ -154,20 +158,19 @@
         .latest-release { background: var(--bg-color); }
         .release-container { display: flex; align-items: center; gap: 5rem; }
         .album-art { flex: 1; position: relative; overflow: hidden; border-radius: 2px; }
-        .album-art img { width: 100%; transition: transform 0.6s var(--ease-out); filter: grayscale(100%); }
-        .album-art:hover img { transform: scale(1.03); filter: grayscale(0%); }
+        
+        .album-art img { 
+            width: 100%; 
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            transition: transform 0.6s var(--ease-out); 
+        }
+        
+        .album-art:hover img { transform: scale(1.03); }
         .album-details { flex: 1; }
         .album-meta { font-size: 0.8rem; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase; display: block; margin-bottom: 1rem; }
         .album-title { font-size: 3.5rem; line-height: 1; margin-bottom: 2rem; color: var(--text-main); }
-        .track-list { margin-top: 2rem; border-top: 1px solid var(--border-color); }
-        .track-row {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 18px 0; border-bottom: 1px solid var(--border-color);
-            transition: 0.3s; color: var(--text-muted); cursor: default;
-        }
-        .track-row:hover { color: var(--text-main); padding-left: 10px; border-color: var(--text-main); }
-        .track-name { font-weight: 500; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 1px; }
-
+        
         .about-section { background: var(--secondary-bg); }
         .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
         .about-text p { font-size: 1.05rem; color: var(--text-muted); margin-bottom: 1.5rem; font-weight: 300; text-align: justify; }
@@ -176,13 +179,20 @@
             line-height: 1.4; margin-bottom: 2rem !important;
             border-left: 3px solid var(--accent); padding-left: 20px;
         }
-        .band-members { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+        
+        .band-members { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+            gap: 20px; 
+        }
         .member-card { text-align: center; }
         .member-card img {
             width: 100%; height: 260px; object-fit: cover; margin-bottom: 15px;
-            filter: grayscale(100%); transition: 0.4s;
+            transition: transform 0.4s; border-radius: 2px;
         }
-        .member-card:hover img { filter: grayscale(0%); }
+        .member-card:hover img { transform: scale(1.02); }
+        .member-name { font-weight: bold; text-transform: uppercase; font-size: 1.1rem; }
+        .member-role { color: var(--text-muted); font-size: 0.9rem; }
 
         .tour-section { background: var(--bg-color); }
         .tour-list { max-width: 900px; margin: 0 auto; }
@@ -236,13 +246,18 @@
         .social-icon:hover { color: var(--accent); opacity: 1; transform: translateY(-3px); }
         .copyright { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; }
 
+        /* ========================================================= */
+        /* RESPONSIVIDADE OTIMIZADA                                  */
+        /* ========================================================= */
         @media (max-width: 992px) {
             .section-title { font-size: 2.5rem; }
-            .release-container { flex-direction: column; gap: 3rem; text-align: center; }
+            .release-container { gap: 2rem; } /* Removido o flex-direction: column daqui */
             .tour-item { grid-template-columns: 1fr 2fr 1fr; gap: 10px; }
             .tour-item div:last-child { display: none; }
         }
+
         @media (max-width: 768px) {
+            /* Navbar */
             .nav-links {
                 position: fixed; top: 0; right: -100%; width: 100%; height: 100vh;
                 background: var(--bg-color);
@@ -252,16 +267,86 @@
             .nav-links.active { right: 0; }
             .menu-icon { display: block; z-index: 1000; }
             .nav-link { font-size: 1.3rem; }
-            .about-grid { grid-template-columns: 1fr; }
+            .hero-logo { max-width: 80%; }
+            
+            /* --- 1. MÚSICA - ESTRUTURA LADO A LADO --- */
+            .release-container {
+                flex-direction: row; 
+                align-items: flex-start;
+                gap: 1.2rem;
+                text-align: left;
+            }
+            .album-art { 
+                flex: 0 0 45%; 
+            }
+            .album-details { 
+                flex: 1; 
+                min-width: 0; /* Previne que o iframe force a largura e quebre o layout */
+            }
+            .album-title { 
+                font-size: 1.8rem; 
+                margin-bottom: 0.5rem; 
+            }
+            .album-meta {
+                margin-bottom: 0.5rem;
+            }
+            .track-list { 
+                gap: 8px !important; 
+                margin-top: 0.5rem !important; 
+            }
+            .track-list iframe { 
+                height: 80px !important; /* Força o player pro modo compacto */
+            }
+            .track-list div { 
+                font-size: 9px !important; 
+                margin-bottom: 5px !important; 
+            }
+
+            /* --- 2. DOWNLOADS - LADO A LADO --- */
+            .files-grid {
+                grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+                gap: 10px;
+            }
+            .file-card {
+                padding: 15px 10px;
+                text-align: center;
+                align-items: center;
+            }
+            .file-header {
+                flex-direction: column;
+                gap: 5px;
+                margin-bottom: 10px;
+            }
+            .file-icon { font-size: 1.5rem; margin-bottom: 5px; }
+            .file-title { font-size: 0.75rem; }
+            .file-card .btn {
+                padding: 8px 4px;
+                font-size: 0.65rem;
+                width: 100%;
+            }
+
+            /* --- 3. HARMONIA GERAL DO MOBILE --- */
+            .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+            
+            /* Galeria e Integrantes: 2 colunas para não ficar gigante */
+            .band-members { grid-template-columns: repeat(2, 1fr); gap: 15px; }
+            .member-card img { height: 180px; }
+            .member-name { font-size: 1rem; }
+            
+            /* Loja: 2 colunas */
+            .shop-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
+            .product-img { height: 160px; }
+            .product-info h3 { font-size: 0.95rem; }
+            .product-price { font-size: 0.85rem; }
+            .product-info .btn { padding: 8px; font-size: 0.75rem; }
+
+            /* Agenda */
             .tour-item { grid-template-columns: 1fr; text-align: center; gap: 5px; padding: 20px 0; }
             .tour-item div:last-child { display: block; margin-top: 15px; }
-            .hero-logo { max-width: 80%; }
-            .album-title { font-size: 2.5rem; }
         }
     </style>
 
     <script>
-        // Check theme before loading
         const savedTheme = localStorage.getItem('theme');
         if (savedTheme) {
             document.documentElement.setAttribute('data-theme', savedTheme);
@@ -274,7 +359,7 @@
 
     <nav id="navbar">
         <a href="#" class="nav-logo">
-			<img src="imagens/MASSA.svg" alt="MASSA!">
+			<img src="" alt="MASSA!">
 		</a>
         
         <div class="nav-actions">
@@ -301,7 +386,7 @@
     <header id="home" class="hero">
         <div class="hero-bg"></div>
         <div class="hero-content">
-            <img src="imagens/MASSA.svg" alt="MASSA!" class="hero-logo">
+            <img src="" alt="MASSA!" class="hero-logo">
             <div class="hero-cta">
                 <a href="#music" class="btn btn-accent">Ouvir Agora</a>
                 <a href="#tour" class="btn">Ver Agenda</a>
@@ -366,7 +451,7 @@
     <footer id="contact" class="footer">
         <div class="container">
             <a href="#" class="footer-logo">
-                <img src="imagens/MASSA.svg" alt="MASSA!">
+                <img src="" alt="MASSA!">
             </a>
             
             <div class="social-big">
@@ -383,24 +468,32 @@
     <script src="dados.js"></script>
 
     <script>
-        // --- 1. POPULATE CONTENT FUNCTION ---
         function loadDynamicContent() {
-            // Verifica se o arquivo de dados foi carregado
             if (typeof siteContent === 'undefined') {
                 console.error("Erro: arquivo dados.js não encontrado.");
                 return;
             }
 
+            // --- GLOBAL SETTINGS ---
+            if(siteContent.global) {
+                if(siteContent.global.logo) {
+                    document.querySelectorAll('.nav-logo img, .hero-logo, .footer-logo img').forEach(img => {
+                        img.src = siteContent.global.logo;
+                    });
+                }
+                if(siteContent.global.heroBg) {
+                    const heroBg = document.querySelector('.hero-bg');
+                    if(heroBg) heroBg.style.backgroundImage = `url('${siteContent.global.heroBg}')`;
+                }
+            }
+
             // --- A. Render Music ---
             const mData = siteContent.music;
-            let tracksHTML = '';
-            mData.tracks.forEach(track => {
-                tracksHTML += `
-                    <div class="track-row">
-                        <span class="track-name">${track.name}</span>
-                        <span class="track-time">${track.time}</span>
-                    </div>`;
-            });
+            const soundcloudHTML = `
+                <iframe width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A2272839725&color=%23d11212&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/bandamassa" title="Massa" target="_blank" style="color: #cccccc; text-decoration: none;">Massa</a> · <a href="https://soundcloud.com/bandamassa/painho-4" title="Painho" target="_blank" style="color: #cccccc; text-decoration: none;">Painho</a></div>
+                
+                <iframe width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A2272839713&color=%23d11212&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/bandamassa" title="Massa" target="_blank" style="color: #cccccc; text-decoration: none;">Massa</a> · <a href="https://soundcloud.com/bandamassa/tem-que-ser-guerreiro-10" title="Tem Que Ser Guerreiro" target="_blank" style="color: #cccccc; text-decoration: none;">Tem Que Ser Guerreiro</a></div>
+            `;
 
             document.getElementById('music-data-container').innerHTML = `
                 <div class="album-art reveal-up">
@@ -409,37 +502,39 @@
                 <div class="album-details reveal-up delay-200">
                     <span class="album-meta">${mData.meta}</span>
                     <h3 class="album-title">${mData.title}</h3>
-                    <div class="track-list">${tracksHTML}</div>
-                    <div class="streaming-buttons" style="margin-top: 2rem; display: flex; gap: 15px;">
-                        <button class="btn btn-accent"><i class="fab fa-spotify"></i> Spotify</button>
-                        <button class="btn"><i class="fab fa-apple"></i> Apple Music</button>
+                    <div class="track-list" style="border-top: none; margin-top: 1rem; display: flex; flex-direction: column; gap: 15px;">
+                        ${soundcloudHTML}
                     </div>
                 </div>
             `;
 
-            // --- B. Render Biography ---
+            // --- B. Render Biography & Members/Gallery ---
             document.getElementById('about-text-container').innerHTML = `
                 <p class="about-highlight">${siteContent.about.highlight}</p>
                 <p>${siteContent.about.text}</p>
             `;
 
             let membersHTML = '';
-            siteContent.about.members.forEach((member, index) => {
-                // Adicionamos delay para animação em cascata
-                let delayClass = index === 0 ? 'delay-100' : 'delay-200';
-                membersHTML += `
-                    <div class="member-card reveal-up ${delayClass}">
-                        <img src="${member.img}" alt="${member.name}">
-                        <div class="member-name">${member.name}</div>
-                        <div class="member-role">${member.role}</div>
-                    </div>`;
-            });
+            if(siteContent.about.members) {
+                siteContent.about.members.forEach((member, index) => {
+                    let delayClass = `delay-${(index % 3 + 1) * 100}`;
+                    
+                    let nameMarkup = member.name ? `<div class="member-name">${member.name}</div>` : '';
+                    let roleMarkup = member.role ? `<div class="member-role">${member.role}</div>` : '';
+                    
+                    membersHTML += `
+                        <div class="member-card reveal-up ${delayClass}">
+                            <img src="${member.img}" alt="${member.name || 'Galeria MASSA!'}">
+                            ${nameMarkup}
+                            ${roleMarkup}
+                        </div>`;
+                });
+            }
             document.getElementById('about-members-container').innerHTML = membersHTML;
 
             // --- C. Render Tour ---
             let tourHTML = '';
             siteContent.tour.forEach((show, index) => {
-                // Lógica do botão (Sold Out ou Ingresso)
                 let buttonHTML = `<a href="${show.link}" class="btn btn-accent">Ingressos</a>`;
                 if(show.status === 'soldout') {
                     buttonHTML = `<span class="btn" style="opacity: 0.5; border: 1px dashed var(--text-muted);">Sold Out</span>`;
@@ -491,7 +586,6 @@
             document.getElementById('files-grid-container').innerHTML = filesHTML;
         }
 
-        // --- 2. THEME & INTERACTION LOGIC (FROM ORIGINAL) ---
         const toggleBtn = document.getElementById('theme-toggle');
         const icon = toggleBtn.querySelector('i');
         const html = document.documentElement;
@@ -539,14 +633,9 @@
             else nav.classList.remove('scrolled');
         });
 
-        // --- 3. INITIALIZATION ---
-        // Aqui carregamos o conteúdo e DEPOIS ativamos as animações
         document.addEventListener('DOMContentLoaded', () => {
-            // 1. Gera o HTML com base no dados.js
             loadDynamicContent();
 
-            // 2. Ativa o Intersection Observer (Animations)
-            // Precisamos rodar isso APÓS o conteúdo ser gerado
             const observerOptions = {
                 threshold: 0.15, 
                 rootMargin: "0px 0px -50px 0px"
@@ -560,9 +649,11 @@
                 });
             }, observerOptions);
 
-            document.querySelectorAll('.reveal-up').forEach(el => {
-                observer.observe(el);
-            });
+            setTimeout(() => {
+                document.querySelectorAll('.reveal-up').forEach(el => {
+                    observer.observe(el);
+                });
+            }, 100);
         });
     </script>
 </body>

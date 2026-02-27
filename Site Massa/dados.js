@@ -1,42 +1,38 @@
 /* ARQUIVO DE DADOS: dados.js */
 
 const siteContent = {
+    "global": {
+        "logo": "imagens/MASSA.svg",
+        "heroBg": "imagens/massatodos.png"
+    },
     "music": {
-        "albumCover": "imagens/BandaWallpaper.jpeg",
+        "albumCover": "imagens/album.jpg",
         "meta": "ALBUM • 2026 • Punk/Hardcore",
-        "title": "GALINHA SEM CABEÇA",
-        "tracks": [
-            {
-                "name": "01. Intro",
-                "time": "02:45"
-            },
-            {
-                "name": "02. Painho",
-                "time": "03:12"
-            },
-            {
-                "name": "03. Ninfeta",
-                "time": "01:58"
-            }
-        ],
-        "links": {
-            "spotify": "#",
-            "apple": "#"
-        }
+        "title": "GALINHA SEM CABEÇA"
     },
     "about": {
         "highlight": "\"A MASSA! não pede licença. Nós chegamos, tocamos alto e deixamos o palco pegando fogo.\"",
-        "text": "Formada nas ruas de Aracaju em 2025, a banda MASSA! traz a essência crua do Punk Rock combinada com a velocidade do Hardcore moderno. Somos quatro amigos unidos pelo barulho, criando músicas que falam sobre a realidade urbana com energia visceral.",
+        "text": "Formada nas ruas de Aracaju em 2025, a banda MASSA! traz a essência crua do Punk Rock combinada com a velocidade do Hardcore moderno. Somos cinco amigos unidos pelo barulho, criando músicas que falam sobre a realidade urbana com energia visceral. Nossas apresentações são repletas de interações e encenações que deixam o público cada vez mais envolvido com a química da banda.",
         "members": [
             {
-                "name": "Vocal",
-                "role": "Voz / Guitarra",
-                "img": "imagens/Ensaio2.jpeg"
+                "name": "",
+                "role": "",
+                "img": "imagens/banda1.jpeg"
             },
             {
-                "name": "Baixo",
-                "role": "Baixo / Backing",
-                "img": "imagens/Ensaio3.jpeg"
+                "name": "",
+                "role": "",
+                "img": "imagens/banda2.jpeg"
+            },
+            {
+                "name": "",
+                "role": "",
+                "img": "imagens/banda3.jpeg"
+            },
+            {
+                "name": "",
+                "role": "",
+                "img": "imagens/banda4.jpg"
             }
         ]
     },
